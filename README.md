@@ -8,6 +8,16 @@
 
 Model Context Protocol (MCP) server for Atlassian products (Confluence and Jira). This integration supports both Confluence & Jira Cloud and Server/Data Center deployments.
 
+# QUICKSTART
+
+1. **Setup .env**: Set at minimum:
+   - `JIRA_URL` e.g. https://legitscript.atlassian.net/,
+   - `JIRA_USERNAME` e.g. adam.weber@legitscript.com,
+   - `JIRA_API_TOKEN` obtain from https://id.atlassian.com/manage-profile/security/api-tokens
+2. **Enable read-only**: Set `READ_ONLY_MODE=true` in .env for safe testing
+3. **Start server**: `docker-compose up`
+4. **Connect IDE**: Use SSE transport at `http://localhost:9000/sse`
+
 ## Example Usage
 
 Ask your AI assistant to:
@@ -29,8 +39,8 @@ https://github.com/user-attachments/assets/7fe9c488-ad0c-4876-9b54-120b666bb785
 
 ### Compatibility
 
-| Product        | Deployment Type    | Support Status              |
-|----------------|--------------------|-----------------------------|
+| Product        | Deployment Type    | Support Status               |
+| -------------- | ------------------ | ---------------------------- |
 | **Confluence** | Cloud              | ✅ Fully supported           |
 | **Confluence** | Server/Data Center | ✅ Supported (version 6.0+)  |
 | **Jira**       | Cloud              | ✅ Fully supported           |
@@ -95,8 +105,8 @@ docker pull ghcr.io/sooperset/mcp-atlassian:latest
 
 MCP Atlassian is designed to be used with AI assistants through IDE integration.
 
-> [!TIP]
-> **For Claude Desktop**: Locate and edit the configuration file directly:
+> [!TIP] > **For Claude Desktop**: Locate and edit the configuration file directly:
+>
 > - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 > - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 > - **Linux**: `~/.config/Claude/claude_desktop_config.json`
@@ -122,10 +132,10 @@ There are two main approaches to configure the Docker container:
 >
 > See the [.env.example](https://github.com/sooperset/mcp-atlassian/blob/main/.env.example) file for all available options.
 
-
 ### 📝 Configuration Examples
 
 **Method 1 (Passing Variables Directly):**
+
 ```json
 {
   "mcpServers": {
@@ -135,12 +145,18 @@ There are two main approaches to configure the Docker container:
         "run",
         "-i",
         "--rm",
-        "-e", "CONFLUENCE_URL",
-        "-e", "CONFLUENCE_USERNAME",
-        "-e", "CONFLUENCE_API_TOKEN",
-        "-e", "JIRA_URL",
-        "-e", "JIRA_USERNAME",
-        "-e", "JIRA_API_TOKEN",
+        "-e",
+        "CONFLUENCE_URL",
+        "-e",
+        "CONFLUENCE_USERNAME",
+        "-e",
+        "CONFLUENCE_API_TOKEN",
+        "-e",
+        "JIRA_URL",
+        "-e",
+        "JIRA_USERNAME",
+        "-e",
+        "JIRA_API_TOKEN",
         "ghcr.io/sooperset/mcp-atlassian:latest"
       ],
       "env": {
@@ -176,6 +192,7 @@ There are two main approaches to configure the Docker container:
   }
 }
 ```
+
 </details>
 
 <details>
@@ -192,12 +209,18 @@ For Server/Data Center deployments, use direct variable passing:
         "run",
         "--rm",
         "-i",
-        "-e", "CONFLUENCE_URL",
-        "-e", "CONFLUENCE_PERSONAL_TOKEN",
-        "-e", "CONFLUENCE_SSL_VERIFY",
-        "-e", "JIRA_URL",
-        "-e", "JIRA_PERSONAL_TOKEN",
-        "-e", "JIRA_SSL_VERIFY",
+        "-e",
+        "CONFLUENCE_URL",
+        "-e",
+        "CONFLUENCE_PERSONAL_TOKEN",
+        "-e",
+        "CONFLUENCE_SSL_VERIFY",
+        "-e",
+        "JIRA_URL",
+        "-e",
+        "JIRA_PERSONAL_TOKEN",
+        "-e",
+        "JIRA_SSL_VERIFY",
         "ghcr.io/sooperset/mcp-atlassian:latest"
       ],
       "env": {
@@ -233,15 +256,23 @@ This example shows how to configure `mcp-atlassian` in your IDE (like Cursor or 
         "run",
         "--rm",
         "-i",
-        "-v", "<path_to_your_home>/.mcp-atlassian:/home/app/.mcp-atlassian",
-        "-e", "JIRA_URL",
-        "-e", "CONFLUENCE_URL",
-        "-e", "ATLASSIAN_OAUTH_CLIENT_ID",
-        "-e", "ATLASSIAN_OAUTH_CLIENT_SECRET",
-        "-e", "ATLASSIAN_OAUTH_REDIRECT_URI",
-        "-e", "ATLASSIAN_OAUTH_SCOPE",
-        "-e", "ATLASSIAN_OAUTH_CLOUD_ID",
-        "ghcr.io/sooperset/mcp-atlassian:latest",
+        "-v",
+        "<path_to_your_home>/.mcp-atlassian:/home/app/.mcp-atlassian",
+        "-e",
+        "JIRA_URL",
+        "-e",
+        "CONFLUENCE_URL",
+        "-e",
+        "ATLASSIAN_OAUTH_CLIENT_ID",
+        "-e",
+        "ATLASSIAN_OAUTH_CLIENT_SECRET",
+        "-e",
+        "ATLASSIAN_OAUTH_REDIRECT_URI",
+        "-e",
+        "ATLASSIAN_OAUTH_SCOPE",
+        "-e",
+        "ATLASSIAN_OAUTH_CLOUD_ID",
+        "ghcr.io/sooperset/mcp-atlassian:latest"
       ],
       "env": {
         "JIRA_URL": "https://your-company.atlassian.net",
@@ -258,6 +289,7 @@ This example shows how to configure `mcp-atlassian` in your IDE (like Cursor or 
 ```
 
 > [!NOTE]
+>
 > - `ATLASSIAN_OAUTH_CLOUD_ID` is obtained from the `--oauth-setup` wizard output.
 > - Other `ATLASSIAN_OAUTH_*` variables are those you configured for your OAuth app in the Atlassian Developer Console (and used as input to the setup wizard).
 > - `JIRA_URL` and `CONFLUENCE_URL` for your Cloud instances are still required.
@@ -284,10 +316,14 @@ Add the relevant proxy variables to the `args` (using `-e`) and `env` sections o
         "run",
         "-i",
         "--rm",
-        "-e", "... existing Confluence/Jira vars",
-        "-e", "HTTP_PROXY",
-        "-e", "HTTPS_PROXY",
-        "-e", "NO_PROXY",
+        "-e",
+        "... existing Confluence/Jira vars",
+        "-e",
+        "HTTP_PROXY",
+        "-e",
+        "HTTPS_PROXY",
+        "-e",
+        "NO_PROXY",
         "ghcr.io/sooperset/mcp-atlassian:latest"
       ],
       "env": {
@@ -318,9 +354,12 @@ Credentials in proxy URLs are masked in logs. If you set `NO_PROXY`, it will be 
         "run",
         "--rm",
         "-i",
-        "-e", "CONFLUENCE_URL",
-        "-e", "CONFLUENCE_USERNAME",
-        "-e", "CONFLUENCE_API_TOKEN",
+        "-e",
+        "CONFLUENCE_URL",
+        "-e",
+        "CONFLUENCE_USERNAME",
+        "-e",
+        "CONFLUENCE_API_TOKEN",
         "ghcr.io/sooperset/mcp-atlassian:latest"
       ],
       "env": {
@@ -334,6 +373,7 @@ Credentials in proxy URLs are masked in logs. If you set `NO_PROXY`, it will be 
 ```
 
 For Confluence Server/DC, use:
+
 ```json
 {
   "mcpServers": {
@@ -343,8 +383,10 @@ For Confluence Server/DC, use:
         "run",
         "--rm",
         "-i",
-        "-e", "CONFLUENCE_URL",
-        "-e", "CONFLUENCE_PERSONAL_TOKEN",
+        "-e",
+        "CONFLUENCE_URL",
+        "-e",
+        "CONFLUENCE_PERSONAL_TOKEN",
         "ghcr.io/sooperset/mcp-atlassian:latest"
       ],
       "env": {
@@ -367,9 +409,12 @@ For Confluence Server/DC, use:
         "run",
         "--rm",
         "-i",
-        "-e", "JIRA_URL",
-        "-e", "JIRA_USERNAME",
-        "-e", "JIRA_API_TOKEN",
+        "-e",
+        "JIRA_URL",
+        "-e",
+        "JIRA_USERNAME",
+        "-e",
+        "JIRA_API_TOKEN",
         "ghcr.io/sooperset/mcp-atlassian:latest"
       ],
       "env": {
@@ -383,6 +428,7 @@ For Confluence Server/DC, use:
 ```
 
 For Jira Server/DC, use:
+
 ```json
 {
   "mcpServers": {
@@ -392,8 +438,10 @@ For Jira Server/DC, use:
         "run",
         "--rm",
         "-i",
-        "-e", "JIRA_URL",
-        "-e", "JIRA_PERSONAL_TOKEN",
+        "-e",
+        "JIRA_URL",
+        "-e",
+        "JIRA_PERSONAL_TOKEN",
         "ghcr.io/sooperset/mcp-atlassian:latest"
       ],
       "env": {
@@ -410,12 +458,14 @@ For Jira Server/DC, use:
 ### 👥 HTTP Transport Configuration
 
 Instead of using `stdio`, you can run the server as a persistent HTTP service using either:
+
 - `sse` (Server-Sent Events) transport at `/sse` endpoint
 - `streamable-http` transport at `/mcp` endpoint
 
 Both transport types support single-user and multi-user authentication:
 
 **Authentication Options:**
+
 - **Single-User**: Use server-level authentication configured via environment variables
 - **Multi-User**: Each user provides their own authentication:
   - Cloud: OAuth 2.0 Bearer tokens
@@ -423,7 +473,7 @@ Both transport types support single-user and multi-user authentication:
 
 <details> <summary>Basic HTTP Transport Setup</summary>
 
-1. Start the server with your chosen transport:
+1.  Start the server with your chosen transport:
 
     ```bash
     # For SSE transport
@@ -439,36 +489,38 @@ Both transport types support single-user and multi-user authentication:
       --transport streamable-http --port 9000 -vv
     ```
 
-2. Configure your IDE (single-user example):
+2.  Configure your IDE (single-user example):
 
-    **SSE Transport Example:**
-    ```json
-    {
-      "mcpServers": {
-        "mcp-atlassian-http": {
-          "url": "http://localhost:9000/sse"
+        **SSE Transport Example:**
+        ```json
+        {
+          "mcpServers": {
+            "mcp-atlassian-http": {
+              "url": "http://localhost:9000/sse"
+            }
+          }
         }
-      }
-    }
-    ```
+        ```
 
-    **Streamable-HTTP Transport Example:**
-    ```json
-    {
-      "mcpServers": {
-        "mcp-atlassian-service": {
-          "url": "http://localhost:9000/mcp"
+        **Streamable-HTTP Transport Example:**
+        ```json
+        {
+          "mcpServers": {
+            "mcp-atlassian-service": {
+              "url": "http://localhost:9000/mcp"
+            }
+          }
         }
-      }
-    }
-    ```
-</details>
+        ```
+
+    </details>
 
 <details> <summary>Multi-User Authentication Setup</summary>
 
 Here's a complete example of setting up multi-user authentication with streamable-HTTP transport:
 
 1. First, run the OAuth setup wizard to configure the server's OAuth credentials:
+
    ```bash
    docker run --rm -i \
      -p 8080:8080 \
@@ -477,6 +529,7 @@ Here's a complete example of setting up multi-user authentication with streamabl
    ```
 
 2. Start the server with streamable-HTTP transport:
+
    ```bash
    docker run --rm -p 9000:9000 \
      --env-file /path/to/your/.env \
@@ -492,6 +545,7 @@ Here's a complete example of setting up multi-user authentication with streamabl
 - **Server/Data Center (PAT):** Use this if you are on Atlassian Server or Data Center and each user has a Personal Access Token (PAT).
 
 **Cloud (OAuth 2.0) Example:**
+
 ```json
 {
   "mcpServers": {
@@ -506,6 +560,7 @@ Here's a complete example of setting up multi-user authentication with streamabl
 ```
 
 **Server/Data Center (PAT) Example:**
+
 ```json
 {
   "mcpServers": {
@@ -531,6 +586,7 @@ Here's a complete example of setting up multi-user authentication with streamabl
    ```
 
 > [!NOTE]
+>
 > - The server should have its own fallback authentication configured (e.g., via environment variables for API token, PAT, or its own OAuth setup using --oauth-setup). This is used if a request doesn't include user-specific authentication.
 > - **OAuth**: Each user needs their own OAuth access token from your Atlassian OAuth app.
 > - **PAT**: Each user provides their own Personal Access Token.
@@ -564,7 +620,7 @@ Here's a complete example of setting up multi-user authentication with streamabl
 <details> <summary>View All Tools</summary>
 
 | Operation | Jira Tools                    | Confluence Tools               |
-|-----------|-------------------------------|--------------------------------|
+| --------- | ----------------------------- | ------------------------------ |
 | **Read**  | `jira_search`                 | `confluence_search`            |
 |           | `jira_get_issue`              | `confluence_get_page`          |
 |           | `jira_get_project_issues`     | `confluence_get_page_children` |
@@ -576,7 +632,7 @@ Here's a complete example of setting up multi-user authentication with streamabl
 |           | `jira_get_sprints_from_board` |                                |
 |           | `jira_get_sprint_issues`      |                                |
 |           | `jira_get_issue_link_types`   |                                |
-|           | `jira_batch_get_changelogs`*  |                                |
+|           | `jira_batch_get_changelogs`\* |                                |
 |           | `jira_get_user_profile`       |                                |
 |           | `jira_download_attachments`   |                                |
 |           | `jira_get_project_versions`   |                                |
@@ -593,7 +649,7 @@ Here's a complete example of setting up multi-user authentication with streamabl
 |           | `jira_create_issue_link`      |                                |
 |           | `jira_remove_issue_link`      |                                |
 
-*Tool only available on Jira Cloud
+\*Tool only available on Jira Cloud
 
 </details>
 
@@ -618,9 +674,9 @@ The server provides two ways to control tool access:
 ### Common Issues
 
 - **Authentication Failures**:
-    - For Cloud: Check your API tokens (not your account password)
-    - For Server/Data Center: Verify your personal access token is valid and not expired
-    - For older Confluence servers: Some older versions require basic authentication with `CONFLUENCE_USERNAME` and `CONFLUENCE_API_TOKEN` (where token is your password)
+  - For Cloud: Check your API tokens (not your account password)
+  - For Server/Data Center: Verify your personal access token is valid and not expired
+  - For older Confluence servers: Some older versions require basic authentication with `CONFLUENCE_USERNAME` and `CONFLUENCE_API_TOKEN` (where token is your password)
 - **SSL Certificate Issues**: If using Server/Data Center and encounter SSL errors, set `CONFLUENCE_SSL_VERIFY=false` or `JIRA_SSL_VERIFY=false`
 - **Permission Errors**: Ensure your Atlassian account has sufficient permissions to access the spaces/projects
 
